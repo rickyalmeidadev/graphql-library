@@ -18,5 +18,7 @@
         "react"
     ],
     "rules": {
+        "arrow-parens": "off",
+        "react/prop-types": "off"
     }
 }
