@@ -15,13 +15,13 @@ const getBooksQuery = gql`
 `;
 
 const BooksList = ({ data }) => {
-  const displayBooks = () => {
+  const renderBooks = () => {
     if (data.loading) {
       return <span>Loading...</span>;
     }
 
     if (data.error) {
-      return <span>Failed to get books</span>;
+      return <span>Failed to load books</span>;
     }
 
     return data.books.map(book => (
@@ -35,7 +35,7 @@ const BooksList = ({ data }) => {
   return (
     <div>
       <ul>
-        {displayBooks()}
+        {renderBooks()}
       </ul>
     </div>
   );
