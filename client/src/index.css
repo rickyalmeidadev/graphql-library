@@ -1,0 +1,11 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.6rem; 
+  -webkit-font-smoothing: antialiased;
+
+  background-color: #f7f7f7;
+}
