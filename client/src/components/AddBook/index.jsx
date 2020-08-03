@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
-import { getAuthorsQuery } from '../../queries/queries';
+import * as compose from 'lodash.flowright';
+import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../../queries/queries';
 
 const initialValues = {
   name: '',
@@ -8,7 +9,7 @@ const initialValues = {
   author: '',
 };
 
-const AddBook = ({ data }) => {
+const AddBook = ({ authorsData, createBook }) => {
   const [formData, setFormData] = useState(initialValues);
 
   const handleChange = (event) => {
@@ -19,19 +20,24 @@ const AddBook = ({ data }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData);
+    createBook({
+      variables: formData,
+      refetchQueries: [{ query: getBooksQuery }],
+    });
+
+    setFormData(initialValues);
   };
 
   const renderOptions = () => {
-    if (data.loading) {
+    if (authorsData.loading) {
       return <option disabled>Loading...</option>;
     }
 
-    if (data.error) {
+    if (authorsData.error) {
       return <option disabled>Failed to load authors</option>;
     }
 
-    return data.authors.map(author => (
+    return authorsData.authors.map(author => (
       <option key={author.id} value={author.id}>{author.name}</option>
     ));
   };
@@ -74,6 +80,7 @@ const AddBook = ({ data }) => {
             onChange={handleChange}
             className="input input--select"
           >
+            <option defaultChecked value="">Select an author</option>
             {renderOptions()}
           </select>
         </label>
@@ -83,4 +90,7 @@ const AddBook = ({ data }) => {
   );
 };
 
-export default graphql(getAuthorsQuery)(AddBook);
+export default compose(
+  graphql(getAuthorsQuery, { name: 'authorsData' }),
+  graphql(addBookMutation, { name: 'createBook' }),
+)(AddBook);
