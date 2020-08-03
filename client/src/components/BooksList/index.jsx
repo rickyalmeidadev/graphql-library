@@ -13,10 +13,7 @@ const BooksList = ({ data }) => {
     }
 
     return data.books.map(book => (
-      <li key={book.id}>
-        <h2>{book.name}</h2>
-        <small>{book.author.name}</small>
-      </li>
+      <li key={book.id}>{book.name}</li>
     ));
   };
 
